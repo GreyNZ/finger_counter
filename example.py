@@ -134,9 +134,9 @@ def is_pinky_extended(results):
 
 
 with mp_hands.Hands(
-    model_complexity=0,z
+    model_complexity=0,
     min_detection_confidence=0.5,
-    min_tracking_confidence=0.5) as hands:  z
+    min_tracking_confidence=0.5) as hands:
   while cap.isOpened():
     success, image = cap.read()
     if not success:
@@ -158,7 +158,7 @@ with mp_hands.Hands(
 
     if results.multi_hand_landmarks:
         #print(len(results.multi_hand_landmarks))
-        print(f"{results.multi_hand_landmarks=}")
+        #print(f"{results.multi_hand_landmarks=}")
         for hand_landmarks in results.multi_hand_landmarks:
             mp_drawing.draw_landmarks(
                 image,
