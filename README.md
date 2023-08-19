@@ -5,6 +5,7 @@ playing around with mediapipe to make a finger counting game
 
 # Dependancies
 Python 3.11
+conda create --name hands python=3.11
 Mediapipe Hand Landmarker https://developers.google.com/mediapipe/solutions/vision/hand_landmarker#models
 
 # Concept
