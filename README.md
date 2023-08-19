@@ -15,3 +15,5 @@ Users present a number of fingers, displays number of fingers total.
 
 Mediapipe Hand Landmarker returns array of 20 locations for each hand land mark, Marks of interest are WRIST (0), MCP and TIP for each finger, and TIP of thumb.
 Idea is to assess finger curl by taking absolute distance from MCP to TIP for each finger. For thumb, will consider distance from thumb TIP to MCP of pinky finger, relative to distance from MCP of index and pinky
+
+Test to see if I can commit now...
