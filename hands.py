@@ -15,16 +15,21 @@ if not cap.isOpened():
     print("Error: Could not open camera.")
     exit()
 
-# video
 BaseOptions = mp.tasks.BaseOptions
 HandLandmarker = mp.tasks.vision.HandLandmarker
 HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
+HandLandmarkerResult = mp.tasks.vision.HandLandmarkerResult
 VisionRunningMode = mp.tasks.vision.RunningMode
 
-# Create a hand landmarker instance with the video mode:
+# Create a hand landmarker instance with the live stream mode:
+def print_result(result: HandLandamarkerResult, output_image: mp.Image, timestamp_ms: int):
+    print('hand landmarker result: {}'.format(result))
+
 options = HandLandmarkerOptions(
-    base_options=BaseOptions(model_asset_path='hand_landmarker.task'),
-    running_mode=VisionRunningMode.VIDEO)
+    base_options=BaseOptions(model_asset_path='/path/to/model.task'),
+    running_mode=VisionRunningMode.LIVE_STREAM,
+    result_callback=print_result)
+    
 with HandLandmarker.create_from_options(options) as landmarker:
     # Process video frames one by one, until the video is completed.
 
