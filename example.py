@@ -7,6 +7,8 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
+DIST_FACTOR = 1.5   # Threshold for 3D vector mean comparison as a factor of TIP vs MCP
+
 
 # Define the text to be displayed
 TEXT = "Counting Time!"
@@ -21,10 +23,10 @@ cap = cv2.VideoCapture(0)
 
 # Calculate the position to place the text at the top of the screen
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-text_x = (width - text_size[0]) // 2
+text_x = abs((width - text_size[0]) // 2)
 text_y = text_size[1] + 10  # Some padding from the top
 
-def is_finger_pinch(results):
+def is_finger_pinch(results):           # Deprecated
     """pinchy pinchy"""
     # Get the coordinates of the landmarks
     landmarks = results.multi_hand_landmarks[0].landmark
@@ -61,7 +63,7 @@ def is_thumb_extended(results):
     # Get the distance between tip and mcp
     distance = np.sqrt((thumb_tip.x - mcp.x)**2 + (thumb_tip.y - mcp.y)**2)
     # Use the distance to determine if the finger is extended
-    if distance < 0.08:
+    if distance < 0.06:
         return 0
     else:
         return 1
@@ -70,14 +72,19 @@ def is_index_extended(results):
     """pointy pointy"""
     # Get the coordinates of the landmarks
     landmarks = results.multi_hand_landmarks[0].landmark
-    # Get the tip of the index finger
-    index_tip = landmarks[mp_hands.HandLandmark.INDEX_FINGER_TIP]
+    # Get the wrist
+    wrist = landmarks[mp_hands.HandLandmark.WRIST]
+    # Get the tip of the ring finger
+    tip = landmarks[mp_hands.HandLandmark.INDEX_FINGER_TIP]
     # Get the pinger MCP
-    index_mcp = landmarks[mp_hands.HandLandmark.INDEX_FINGER_MCP]
-    # Get the distance between tip and mcp
-    distance = np.sqrt((index_tip.x - index_mcp.x)**2 + (index_tip.y - index_mcp.y)**2)
+    mcp = landmarks[mp_hands.HandLandmark.INDEX_FINGER_MCP]
+    # Get the distance between wrist and tip
+    dist_wrist_tip = np.sqrt((tip.x - wrist.x)**2 + (tip.y - wrist.y)**2 + (tip.z - wrist.z)**2)
+    # Get the distance between wrist and mcp
+    dist_wrist_mcp = np.sqrt((mcp.x - wrist.x)**2 + (mcp.y - wrist.y)**2 + (mcp.z - wrist.z)**2)
     # Use the distance to determine if the finger is extended
-    if distance < 0.08:
+    distance_factor = dist_wrist_tip / dist_wrist_mcp
+    if distance_factor < DIST_FACTOR:
         return 0
     else:
         return 1
@@ -86,14 +93,19 @@ def is_middle_extended(results):
     """flippy flippy"""
     # Get the coordinates of the landmarks
     landmarks = results.multi_hand_landmarks[0].landmark
-    # Get the tip of the middle finger
+    # Get the wrist
+    wrist = landmarks[mp_hands.HandLandmark.WRIST]
+    # Get the tip of the ring finger
     tip = landmarks[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
     # Get the pinger MCP
     mcp = landmarks[mp_hands.HandLandmark.MIDDLE_FINGER_MCP]
-    # Get the distance between tip and mcp
-    distance = np.sqrt((tip.x - mcp.x)**2 + (tip.y - mcp.y)**2)
+    # Get the distance between wrist and tip
+    dist_wrist_tip = np.sqrt((tip.x - wrist.x)**2 + (tip.y - wrist.y)**2 + (tip.z - wrist.z)**2)
+    # Get the distance between wrist and mcp
+    dist_wrist_mcp = np.sqrt((mcp.x - wrist.x)**2 + (mcp.y - wrist.y)**2 + (mcp.z - wrist.z)**2)
     # Use the distance to determine if the finger is extended
-    if distance < 0.08:
+    distance_factor = dist_wrist_tip / dist_wrist_mcp
+    if distance_factor < DIST_FACTOR:
         return 0
     else:
         return 1
@@ -102,14 +114,19 @@ def is_ring_extended(results):
     """ringy ringy"""
     # Get the coordinates of the landmarks
     landmarks = results.multi_hand_landmarks[0].landmark
+    # Get the wrist
+    wrist = landmarks[mp_hands.HandLandmark.WRIST]
     # Get the tip of the ring finger
     tip = landmarks[mp_hands.HandLandmark.RING_FINGER_TIP]
     # Get the pinger MCP
     mcp = landmarks[mp_hands.HandLandmark.RING_FINGER_MCP]
-    # Get the distance between tip and mcp
-    distance = np.sqrt((tip.x - mcp.x)**2 + (tip.y - mcp.y)**2)
+    # Get the distance between wrist and tip
+    dist_wrist_tip = np.sqrt((tip.x - wrist.x)**2 + (tip.y - wrist.y)**2 + (tip.z - wrist.z)**2)
+    # Get the distance between wrist and mcp
+    dist_wrist_mcp = np.sqrt((mcp.x - wrist.x)**2 + (mcp.y - wrist.y)**2 + (mcp.z - wrist.z)**2)
     # Use the distance to determine if the finger is extended
-    if distance < 0.08:
+    distance_factor = dist_wrist_tip / dist_wrist_mcp
+    if distance_factor < DIST_FACTOR:
         return 0
     else:
         return 1
@@ -119,19 +136,22 @@ def is_pinky_extended(results):
     """pinky pinky"""
     # Get the coordinates of the landmarks
     landmarks = results.multi_hand_landmarks[0].landmark
-    # Get the tip of the pinky finger
+    # Get the wrist
+    wrist = landmarks[mp_hands.HandLandmark.WRIST]
+    # Get the tip of the ring finger
     tip = landmarks[mp_hands.HandLandmark.PINKY_TIP]
     # Get the pinger MCP
     mcp = landmarks[mp_hands.HandLandmark.PINKY_MCP]
-    # Get the distance between tip and mcp
-    distance = np.sqrt((tip.x - mcp.x)**2 + (tip.y - mcp.y)**2)
+    # Get the distance between wrist and tip
+    dist_wrist_tip = np.sqrt((tip.x - wrist.x)**2 + (tip.y - wrist.y)**2 + (tip.z - wrist.z)**2)
+    # Get the distance between wrist and mcp
+    dist_wrist_mcp = np.sqrt((mcp.x - wrist.x)**2 + (mcp.y - wrist.y)**2 + (mcp.z - wrist.z)**2)
     # Use the distance to determine if the finger is extended
-    if distance < 0.08:
+    distance_factor = dist_wrist_tip / dist_wrist_mcp
+    if distance_factor < DIST_FACTOR:
         return 0
     else:
         return 1
-
-
 
 with mp_hands.Hands(
     model_complexity=0,
