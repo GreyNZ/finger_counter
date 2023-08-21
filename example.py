@@ -9,7 +9,6 @@ mp_hands = mp.solutions.hands
 
 DIST_FACTOR = 1.5   # Threshold for 3D vector mean comparison as a factor of TIP vs MCP
 
-
 # Define the text to be displayed
 TEXT = "Counting Time!"
 font_scale = 4

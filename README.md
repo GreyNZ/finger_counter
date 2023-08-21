@@ -7,10 +7,14 @@ playing around with mediapipe to make a finger counting game
 Python 3.11
 conda create --name hands python=3.11
 Mediapipe Hand Landmarker https://developers.google.com/mediapipe/solutions/vision/hand_landmarker#models
+There is a `requirements.txt``, this works on a m2 mac pro with conda. 
+Alternatively just make an env and pip install [mediapipe, numpy, opencv-python]
+On a raspi just make a venv and install the pkg list above
 
 # Concept
 Demo of open-source ML CV
 Users present a number of fingers, displays number of fingers total.
+`counting two hands currently buggy`
 
 # Method
 Mediapipe Hand Landmarker returns array of 20 locations for each hand land mark, Marks of interest are WRIST (0), MCP and TIP for each finger, and TIP of thumb.
