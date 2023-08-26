@@ -28,7 +28,7 @@ text_y = text_size[1] + 10  # Some padding from the top
 def is_finger_pinch(results):           # Deprecated
     """pinchy pinchy"""
     # Get the coordinates of the landmarks
-    landmarks = results.multi_hand_landmarks[0].landmark
+    landmarks = results.landmark
     # Get the tip of the index finger
     index_tip = landmarks[mp_hands.HandLandmark.INDEX_FINGER_TIP]
     # Get the tip of the thumb
@@ -54,7 +54,7 @@ def count_fingers(results):
 def is_thumb_extended(results):
     """thumby thumby"""
     # Get the coordinates of the landmarks
-    landmarks = results.multi_hand_landmarks[0].landmark
+    landmarks = results.landmark
     # Get the tip of the thumb
     thumb_tip = landmarks[mp_hands.HandLandmark.THUMB_TIP]
     # Get the tip of the thumb
@@ -70,7 +70,7 @@ def is_thumb_extended(results):
 def is_index_extended(results):
     """pointy pointy"""
     # Get the coordinates of the landmarks
-    landmarks = results.multi_hand_landmarks[0].landmark
+    landmarks = results.landmark
     # Get the wrist
     wrist = landmarks[mp_hands.HandLandmark.WRIST]
     # Get the tip of the ring finger
@@ -91,7 +91,7 @@ def is_index_extended(results):
 def is_middle_extended(results):
     """flippy flippy"""
     # Get the coordinates of the landmarks
-    landmarks = results.multi_hand_landmarks[0].landmark
+    landmarks = results.landmark
     # Get the wrist
     wrist = landmarks[mp_hands.HandLandmark.WRIST]
     # Get the tip of the ring finger
@@ -112,7 +112,7 @@ def is_middle_extended(results):
 def is_ring_extended(results):
     """ringy ringy"""
     # Get the coordinates of the landmarks
-    landmarks = results.multi_hand_landmarks[0].landmark
+    landmarks = results.landmark
     # Get the wrist
     wrist = landmarks[mp_hands.HandLandmark.WRIST]
     # Get the tip of the ring finger
@@ -134,7 +134,7 @@ def is_ring_extended(results):
 def is_pinky_extended(results):
     """pinky pinky"""
     # Get the coordinates of the landmarks
-    landmarks = results.multi_hand_landmarks[0].landmark
+    landmarks = results.landmark
     # Get the wrist
     wrist = landmarks[mp_hands.HandLandmark.WRIST]
     # Get the tip of the ring finger
@@ -185,7 +185,7 @@ with mp_hands.Hands(
                 mp_hands.HAND_CONNECTIONS,
                 mp_drawing_styles.get_default_hand_landmarks_style(),
                 mp_drawing_styles.get_default_hand_connections_style())
-            pingers += count_fingers(results)
+            pingers += count_fingers(hand_landmarks)
         #TEXT = is_finger_pinch(results)
     TEXT = str(pingers)
     
