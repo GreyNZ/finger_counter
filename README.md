@@ -13,8 +13,7 @@ On a raspi just make a venv and install the pkg list above
 
 # Concept
 Demo of open-source ML CV
-Users present a number of fingers, displays number of fingers total.
-`counting two hands currently buggy`
+Users present a number of fingers, displays number of extended fingers and thumbs as a tally.
 
 # Method
 Mediapipe Hand Landmarker returns array of 20 locations for each hand land mark, Marks of interest are WRIST (0), MCP and TIP for each finger, and TIP of thumb.
