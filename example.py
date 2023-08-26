@@ -187,6 +187,7 @@ with mp_hands.Hands(
     if results.multi_hand_landmarks:
         #print(len(results.multi_hand_landmarks))
         #print(f"{results.multi_hand_landmarks=}")
+        rude_gesture_detected = 0
         for hand_landmarks in results.multi_hand_landmarks:
             mp_drawing.draw_landmarks(
                 image,
@@ -195,7 +196,8 @@ with mp_hands.Hands(
                 mp_drawing_styles.get_default_hand_landmarks_style(),
                 mp_drawing_styles.get_default_hand_connections_style())
             pingers += count_fingers(hand_landmarks)
-            rude_gesture_detected = birdie_check(hand_landmarks)
+            if birdie_check(hand_landmarks):
+                rude_gesture_detected = 1
         #TEXT = is_finger_pinch(results)
     
     #TEXT = str(pingers)
