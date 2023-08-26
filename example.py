@@ -151,6 +151,14 @@ def is_pinky_extended(results):
         return 0
     else:
         return 1
+    
+def birdie_check(results):
+    """checks if hand is making a rude gesture"""
+    if is_middle_extended(results) and not (is_index_extended(results) or is_ring_extended(results) or is_pinky_extended(results)):
+        return 1
+    else:
+        return 0
+
 
 with mp_hands.Hands(
     model_complexity=0,
@@ -168,6 +176,7 @@ with mp_hands.Hands(
     image.flags.writeable = False
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     results = hands.process(image)
+    rude_gesture_detected = 0
 
     # Draw the hand annotations on the image.
     image.flags.writeable = True
@@ -186,8 +195,11 @@ with mp_hands.Hands(
                 mp_drawing_styles.get_default_hand_landmarks_style(),
                 mp_drawing_styles.get_default_hand_connections_style())
             pingers += count_fingers(hand_landmarks)
+            rude_gesture_detected = birdie_check(hand_landmarks)
         #TEXT = is_finger_pinch(results)
-    TEXT = str(pingers)
+    
+    #TEXT = str(pingers)
+    TEXT = str(pingers) + " " + str("  RUDE!" if rude_gesture_detected else "")
     
     # Flip the image horizontally for a selfie-view display.
     cv2.imshow('MediaPipe Hands', cv2.putText(cv2.flip(image, 1), TEXT, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, font_scale, font_color, font_thickness))
